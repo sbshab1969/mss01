@@ -1,0 +1,45 @@
+Типы и библиотеки ConfigEdit.java
+
+JTree	                 tree;
+DefaultTreeModel         treeModel;
+tree.removeAll();
+tree.addTreeSelectionListener(new TreeSelectionListener() {
+DefaultMutableTreeNode top = new DefaultMutableTreeNode(new NodeInfo(str, cfg));
+treeModel = new DefaultTreeModel(top);
+tree = new JTree(treeModel);
+DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+tree.expandPath(new TreePath(top.getPath()));
+TreePath currentSelection = tree.getSelectionPath();
+
+Node
+Document
+Element
+Attr 
+NodeList
+NamedNodeMap
+
+InputSource              is;
+DocumentBuilderFactory   factory;
+DocumentBuilder          builder;
+Document                 doc = builder.parse(is);
+Element                  root = doc.getDocumentElement();
+NodeList                 childs = root.getChildNodes();
+
+doc.getDocumentElement().normalize();
+Element item = param.getOwnerDocument().createElement("field");
+param.appendChild(item); // Добавляем поле
+NamedNodeMap attr = param.getAttributes();
+attr.removeNamedItem(at.getNodeName());
+param.getParentNode().removeChild(param);
+Attr new_attr = item.getOwnerDocument().createAttribute(field.get_field());
+new_attr.setValue(field.get_value());
+item.getAttributes().setNamedItem(new_attr);
+
+OraclePreparedStatement stmt = (OraclePreparedStatement) conn
+XMLType poXML = XMLType.createXML(conn.getConnection(), Utils.XML2String(doc));
+CLOB clob;
+
+JFileChooser fc = new JFileChooser();
+
+
+

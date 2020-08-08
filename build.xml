@@ -1,0 +1,66 @@
+<project name="mss" basedir="." default="build">
+
+    <property name="lib.dir"    value="lib" />
+    <property name="src.dir"    value="src" />
+    <property name="java.dir"   value="src/main/java" />
+    <property name="res.dir"    value="src/main/resources" />
+    <property name="target.dir" value="bin" />
+    <property name="class.dir"  value="${target.dir}" />
+
+    <path id="master-classpath" description="Master CLASSPATH for this script">
+        <fileset dir="${lib.dir}">
+            <include name="*.jar" />
+        </fileset>
+        <pathelement location="${class.dir}" />
+    </path>
+
+    <target name="clean">
+        <delete dir="${target.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${target.dir}" />
+        <mkdir dir="${class.dir}" />
+    </target>
+
+    <target name="copy-resources" depends="init">
+        <copy todir="${class.dir}">
+              <fileset dir="${res.dir}">
+                 <include name="**/*.xml" />
+                 <include name="**/*.properties" />
+              </fileset>
+        </copy>
+
+        <native2ascii src="${res.dir}" dest="${class.dir}" 
+ 	     includes="**/*.txt" encoding="cp1251" ext=".properties"/>
+
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${java.dir}" destdir="${class.dir}" encoding="utf-8" 
+               classpathref="master-classpath" 
+               deprecation="on" includeAntRuntime="yes"/>
+    </target>
+
+    <target name="build" depends="clean,copy-resources,compile"/>
+
+    <target name="jar" depends="build" >
+      <jar jarfile="mss.jar" basedir="${class.dir}">
+           <manifest>
+              <attribute name="Main-Class" value="acp.Main"/>
+              <attribute name="Class-Path" value="lib/ojdbc6.jar lib/swingset-bin_1.0.0-PR4.jar lib/orai18n.jar lib/xdb.jar lib/xmlparserv2.jar"/>
+           </manifest>
+      </jar>
+    </target>
+
+    <target name="run" depends="build">
+        <java fork="true" classname="acp.Main" classpathref="master-classpath">
+            <classpath path="${class.dir}"/>
+        </java>
+    </target>
+
+    <target name="run2" depends="jar">
+        <java fork="true" jar="mss.jar"/> 
+    </target>
+
+</project>

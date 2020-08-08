@@ -1,0 +1,61 @@
+public class SSTableModel extends AbstractTableModel {
+
+
+    /**
+     * Constructs a SSTableModel object.
+     * If this contructor is used the setSSRowSet() method has to be used to set the SSRowSet
+     * before constructing the JTable.
+     */
+    public SSTableModel() {
+        super();
+    }
+
+    /**
+     * Constructs a SSTableModel object with the given SSRowSet.
+     * This will call the execute method on the given SSRowSet.
+     *
+     * @param _rowset    SSRowSet object whose records has to be displayed in JTable.
+     */
+    public SSTableModel(SSRowSet _rowset) throws SQLException {
+        super();
+        rowset = _rowset;
+        init();
+    }
+
+    /**
+     * Sets the SSRowSet for SSTableModel to the given SSRowSet.
+     * This SSRowSet will be used to get the data for JTable.
+     *
+     * @param _rowset    SSRowSet object whose records has to be displayed in JTable.
+     */
+    public void setSSRowSet(SSRowSet _rowset) throws SQLException {
+        rowset = _rowset;
+        init();
+    }
+
+    /**
+     * Initializes the SSTableModel. (Gets  the column count and row count for the
+     * given SSRowSet.)
+     */
+    protected void init() {
+        try {
+
+            columnCount = rowset.getColumnCount();
+            rowset.last();
+            // ROWS IN THE SSROWSET ARE NUMBERED FROM 1, SO LAST ROW NUMBER GIVES THE
+            // ROW COUNT
+            rowCount = rowset.getRow();
+            rowset.first();
+
+// following code added 11-01-2004 per forum suggestion from Diego Gil (dags)
+            // IF DATA CHANGES, ALERT LISTENERS
+            this.fireTableDataChanged();
+// end additions
+
+        } catch(SQLException se) {
+            se.printStackTrace();
+        }
+    }
+
+
+}

@@ -1,0 +1,43 @@
+Типы и библиотеки ConfigEdit.java
+
+InputSource is = new InputSource();
+CLOB clob = (CLOB) rs.getObject(1);
+is.setCharacterStream(clob.getCharacterStream());
+
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = factory.newDocumentBuilder();
+
+Document doc = builder.parse(is);            // Document extends Node
+Element root = doc.getDocumentElement();     // Element extends Node
+void root.normalize();
+String nodeName = root.getNodeName();
+
+NodeList childs = root.getChildNodes();
+int cnt = childs.getLength();
+
+Node cfg = childs.item(i);
+String cfgName = cfg.getNodeName();
+
+Node param;
+NamedNodeMap attr = param.getAttributes();
+int cnt = attr.getLength();
+Node at = attr.item(i);
+String atVal = at.getNodeValue();
+at.setNodeValue("text");
+attr.removeNamedItem(at.getNodeName());
+Node prnt = param.getParentNode();
+Node rCh = prnt.removeChild(param);
+
+//Element item = param.getOwnerDocument().createElement(pars.get(cmbpars.getSelectedIndex()).toString());
+Document ownerDoc = param.getOwnerDocument();
+Element item = ownerDoc.createElement("element");
+
+Node newCh = param.appendChild(item); // Добавляем узел в XML
+
+Attr new_attr = ownerDoc.createAttribute("attribute");
+param.getAttributes().setNamedItem(new_attr);
+//NamedNodeMap getAttributes();
+
+Element item = param.getOwnerDocument().createElement("field");
+param.appendChild(item); // Добавляем поле
+item.getAttributes().setNamedItem(new_attr);
